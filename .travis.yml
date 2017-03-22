@@ -1,0 +1,22 @@
+language: php
+
+php:
+    - 5.6
+    - 7.0
+    - 7.1
+
+before_install:
+    - composer self-update
+    - composer --version
+    - if [ "$TRAVIS_PHP_VERSION" == "7.1" ]; then wget http://get.sensiolabs.org/php-cs-fixer.phar -O php-cs-fixer.phar; fi
+    - if [ "$TRAVIS_PHP_VERSION" == "7.1" ]; then php php-cs-fixer.phar --version; fi
+
+install:
+    - composer install
+
+script:
+    - if [ "$TRAVIS_PHP_VERSION" == "7.1" ]; then php php-cs-fixer.phar fix --dry-run -v; fi
+    - if [ "$TRAVIS_PHP_VERSION" == "7.1" ]; then vendor/bin/phpunit --coverage-clover build/logs/clover.xml; else vendor/bin/phpunit; fi
+
+after_script:
+    - if [ "$TRAVIS_PHP_VERSION" == "7.1" ]; then vendor/bin/coveralls -v; fi
