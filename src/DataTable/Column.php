@@ -25,6 +25,9 @@ class Column implements \JsonSerializable
     /** @var string */
     private $pattern;
 
+    /** @var string */
+    private $role;
+
     /**
      * @param ColumnType $type
      */
@@ -87,6 +90,18 @@ class Column implements \JsonSerializable
     }
 
     /**
+     * @param string $role
+     *
+     * @return Column
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
@@ -102,6 +117,9 @@ class Column implements \JsonSerializable
         }
         if ($this->pattern) {
             $result['pattern'] = $this->pattern;
+        }
+        if ($this->role) {
+            $result['role'] = $this->role;
         }
 
         return $result;
